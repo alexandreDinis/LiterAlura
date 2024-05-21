@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Book (String title,
-                    List<Author> authors,
-                    List<String> languages,
-                    @JsonProperty("download_count")Integer download){
-
+public record BookData(
+        @JsonProperty("count") Integer count,
+        @JsonProperty("next") String next,
+        @JsonProperty("previous") String previous,
+        @JsonProperty("results") List<Book> results) {
 }
+
+
