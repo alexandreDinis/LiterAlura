@@ -6,11 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record BookData(
+public record BooksData(
         @JsonProperty("count") Integer count,
         @JsonProperty("next") String next,
         @JsonProperty("previous") String previous,
-        @JsonProperty("results") List<Book> results) {
+        @JsonProperty("results") List<BookData> results) {
 }
 
 
