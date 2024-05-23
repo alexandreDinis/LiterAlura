@@ -1,11 +1,13 @@
 package com.dinis.LiterAlura.app;
 
 import com.dinis.LiterAlura.messages.Message;
+import com.dinis.LiterAlura.model.Author;
 import com.dinis.LiterAlura.model.Book;
 import com.dinis.LiterAlura.service.BookServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Scanner;
 
@@ -55,15 +57,47 @@ public class App {
                     break;
                 case 3:
                     System.out.println(Message.OP3);
+                    List<Author> authors = service.getAllAuthor();
+                    authors.forEach(author -> System.out.println(Message.AUTHORS + author.getName()+"\n"
+                           +"Nasc.: " + author.getBirthYear()+"\n"+ "Morte: "+author.getDeathYear()));
                     break;
                 case 4:
                     System.out.println(Message.OP4);
+                    var year = input.nextInt();
+                    input.nextLine();
+                    System.out.println("Autores vivos no ano " + year + ":");
+                   List<Author> author = service.getLivingAuthorsInYear(year);
+                   author.forEach(a ->  System.out.println(Message.AUTHORS + a.getName()+"\n"
+                            +"Nasc.: " + a.getBirthYear()+"\n"+ "Morte: "+a.getDeathYear()));
                     break;
                 case 5:
                     System.out.println(Message.OP5);
-                case 0:
-                    System.out.println(Message.SAIR);
+                    var language = input.nextLine();
+                    System.out.println("Livros no idioma " + language + ":");
+                    service.getBooksByLanguage(language).forEach(System.out::println);
                     break;
+                case 6:
+                    System.out.println(Message.OP6);
+                    DoubleSummaryStatistics stats = service.getDownloadStatistics();
+                    System.out.println(Message.OP6);
+                    System.out.println("Soma: " + stats.getSum());
+                    System.out.println("Média: " + stats.getAverage());
+                    System.out.println("Mínimo: " + stats.getMin());
+                    System.out.println("Máximo: " + stats.getMax());
+                    System.out.println("Contagem: " + stats.getCount());
+                    break;
+                case 7:
+                    List<Book> top10Books = service.getTop10MostDownloadedBooks();
+                    System.out.println(Message.TOP10);
+                    top10Books.forEach(System.out::println);
+                    break;
+                case 8:
+                    System.out.println(Message.FIND_BY_AUTHOR);
+                    var name = input.nextLine();
+                    service.searchAthorByName(name);
+                    break;
+                case 0:
+                    System.out.println(Message.Exit);
                 default:
                     System.out.println(Message.OP_ERROR);
 

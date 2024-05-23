@@ -9,7 +9,9 @@ import com.dinis.LiterAlura.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,16 +70,50 @@ public class BookServer {
 
             bookRepository.save(book);
 
-            // Exibir informações do livro salvo
-            System.out.println("Title: " + book.getTitle());
-            System.out.println("Authors: " + book.getAuthors().stream().map(Author::getName).collect(Collectors.joining(", ")));
-            System.out.println("Languages: " + String.join(", ", book.getLanguages()));
-            System.out.println("Download Count: " + book.getDownload());
-            System.out.println();
+            System.out.println(book.toString());
         }
     }
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
+    }
+
+    public List<Author> getAllAuthor(){
+        return authorRepository.findAll();
+    }
+
+    public List<Author> getLivingAuthorsInYear(int year) {
+        return authorRepository.findByBirthYearLessThanEqualAndDeathYearGreaterThanEqual(year, year);
+    }
+
+    public List<Book> getBooksByLanguage(String language) {
+        return bookRepository.findByLanguagesContaining(language);
+    }
+
+    public DoubleSummaryStatistics getDownloadStatistics() {
+        List<Book> books = bookRepository.findAll();
+        return books.stream()
+                .mapToDouble(Book::getDownload)
+                .summaryStatistics();
+    }
+
+    public List<Book> getTop10MostDownloadedBooks() {
+        return bookRepository.findAll().stream()
+                .sorted((b1, b2) -> b2.getDownload().compareTo(b1.getDownload()))
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    public void searchAthorByName(String name) {
+        List<Author> authors = authorRepository.findByNameContainingIgnoreCase(name);
+
+        if (authors.isEmpty()) {
+            System.out.println("Autor não encontrado");
+        } else {
+            authors.forEach(author -> System.out.println("*******Autor******\n" +
+                    "Autor: " + author.getName()+"\n"+
+                    "Nasc.: " + author.getBirthYear() + "\n" +
+                    "Morte: " + author.getDeathYear()));
+        }
     }
 }
 

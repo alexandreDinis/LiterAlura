@@ -15,7 +15,7 @@ public class Author {
     private int birthYear;
     private int deathYear;
 
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
     private List<Book> books;
 
     public Long getId() {
@@ -56,5 +56,14 @@ public class Author {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    @Override
+    public String toString() {
+        return  "\n*********** Autor ************" +
+                "\nname='" + name + '\'' +
+                "\nbirthYear=" + birthYear +
+                "\ndeathYear=" + deathYear +
+                "\nbooks=" + books;
     }
 }
