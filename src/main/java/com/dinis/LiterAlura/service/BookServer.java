@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,8 +26,8 @@ public class BookServer {
 
 
     private final String URL = "https://gutendex.com/books?search=";
-    private ApiClient apiClient = new ApiClient();
-    private DataConverter dataConverter = new DataConverter();
+    private final ApiClient apiClient = new ApiClient();
+    private final DataConverter dataConverter = new DataConverter();
 
 
 

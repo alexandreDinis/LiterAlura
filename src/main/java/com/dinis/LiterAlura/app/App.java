@@ -15,8 +15,8 @@ import java.util.Scanner;
 public class App {
 
 
-    private BookServer service;
-    private Scanner input;
+    private final BookServer service;
+    private final Scanner input;
 
     @Autowired
     public App(BookServer service) {
